@@ -26,7 +26,10 @@ Preferred report contents:
 - proof-of-concept if safe
 - suggested mitigation if known
 
-Until a dedicated security email exists, open a **private security advisory** in GitHub if available for the repository owner, or contact the maintainer through a private channel instead of a public issue.
+Private vulnerability reporting is enabled for this repository. Use GitHub's
+[Report a vulnerability](https://github.com/ancapcloud/ancap/security/advisories/new)
+to share a report privately with the maintainers. Do not include reproduction
+details, credentials or sensitive production data in a public issue or PR.
 
 ## Disclosure policy
 

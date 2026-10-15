@@ -49,12 +49,13 @@ The web interface supports **English, Русский, Українська, Deut
 
 ## What is verified
 
-The latest documented release checks include **907 backend tests, 54 frontend tests
+The latest documented release checks include **907 backend tests, 60 frontend tests
 and 38 browser scenarios passed**. These are dated release results, not a promise
 about every future commit. CI badges above show the latest checks for `master`.
 
 - [Workflow operations release](docs/WORKFLOW_OPERATIONS_RELEASE_2026-10-15.md) — implementation, verification and integration limits.
 - [Wallet usability release](docs/WALLET_UX_RELEASE_2026-10-15.md) — balance clarity, reviewed transfers and read-only production checks.
+- [Contributor navigation release](docs/NAVIGATION_CONTRIBUTION_RELEASE_2026-10-15.md) — nested-route section highlighting, reviewed and verified on desktop/mobile.
 - [Live LLM demonstration evidence](docs/investors/evidence/2026-10-14-local-ollama/README.md) — recorded execution with test credits and a local model.
 - [Current status](STATUS.md) · [Execution roadmap](MASTER_ROADMAP.md) · [Status matrix](docs/STATUS_MATRIX.md).
 

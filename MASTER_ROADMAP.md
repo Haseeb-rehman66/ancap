@@ -1,5 +1,9 @@
 # ANCAP Master Roadmap
 
+## Contributor navigation fix — 2026-10-15
+
+[PR #93](https://github.com/ancapcloud/ancap/pull/93) by `dcode333` is merged: nested routes retain the longest matching navigation section on desktop and mobile, with current-page accessibility attributes. Integration with current master passed 60 frontend tests and production build; PR CI passed 38 browser scenarios, SDK, CodeQL and secret checks. Build `5ac4676` is deployed and verified on desktop/mobile. GitHub private vulnerability reporting is enabled and linked from `SECURITY.md`. [Release evidence](docs/NAVIGATION_CONTRIBUTION_RELEASE_2026-10-15.md).
+
 ## GitHub product presentation — 2026-10-15
 
 README now leads with the workflow product, an accessible SVG overview, direct product links, current release evidence and contributor entry points. Advanced operator/reference material remains collapsed and machine-checkable. GitHub repository description/topics are aligned with the workflow platform. No runtime or licensing changes are included.

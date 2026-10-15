@@ -1,5 +1,9 @@
 # ANCAP Production Roadmap
 
+## Contributor navigation fix — 2026-10-15
+
+PR #93 merged with nested-route section highlighting, including desktop menus and mobile navigation. Current-master frontend tests/build and PR CI passed. Build `5ac4676` is deployed and verified on desktop/mobile. GitHub private vulnerability reporting is enabled; see `SECURITY.md` and [release evidence](docs/NAVIGATION_CONTRIBUTION_RELEASE_2026-10-15.md).
+
 ## GitHub product presentation — 2026-10-15
 
 Repository landing refreshed with a product overview, workflow journey, release evidence and contributor navigation. Documentation and GitHub presentation only; deployed application behavior is unchanged. See `MASTER_ROADMAP.md`.
