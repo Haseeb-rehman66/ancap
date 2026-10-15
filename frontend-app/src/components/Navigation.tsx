@@ -9,6 +9,7 @@ import { useWallet } from "./WalletProvider";
 import { useTheme } from "./ThemeProvider";
 import { MarketRateBar } from "./MarketRateBar";
 import { getPreferredEvmProvider } from "@/lib/evmProvider";
+import { isNavHrefActive } from "@/lib/navActive";
 import type { Language } from "@/locales/translations";
 
 type NavItem = {
@@ -72,6 +73,10 @@ const exploreAuthGroups: NavGroup[] = [
 
 function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
+}
+
+function collectNavHrefs(spotlight: NavItem[], groups: NavGroup[]): string[] {
+  return [...spotlight.map((item) => item.href), ...groups.flatMap((group) => group.items.map((item) => item.href))];
 }
 
 /** Single elegant row — no wrap wall, no clip. */
@@ -170,6 +175,7 @@ function PillNavLink({
     <Link
       href={item.href}
       onClick={onClick}
+      aria-current={active ? "page" : undefined}
       className={cn(
         "relative shrink-0 whitespace-nowrap rounded-lg font-medium tracking-[-0.01em] transition duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#070b16]",
         active
@@ -192,12 +198,14 @@ function PillNavLink({
 
 function ExploreMenu({
   groups,
+  hrefs,
   open,
   onOpenChange,
   pathname,
   t,
 }: {
   groups: NavGroup[];
+  hrefs: readonly string[];
   open: boolean;
   onOpenChange: (v: boolean) => void;
   pathname: string;
@@ -221,6 +229,10 @@ function ExploreMenu({
     };
   }, [open, onOpenChange]);
 
+  const sectionActive = groups.some((group) =>
+    group.items.some((item) => isNavHrefActive(pathname, item.href, hrefs)),
+  );
+
   return (
     <div ref={rootRef} className="relative shrink-0">
       <button
@@ -230,7 +242,7 @@ function ExploreMenu({
         onClick={() => onOpenChange(!open)}
         className={cn(
           "inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-semibold tracking-[-0.01em] transition duration-200",
-          open
+          open || sectionActive
             ? "bg-emerald-400/15 text-emerald-50 shadow-[inset_0_0_0_1px_rgba(52,211,153,0.35)]"
             : "text-emerald-100/80 hover:bg-emerald-400/10 hover:text-white"
         )}
@@ -256,12 +268,13 @@ function ExploreMenu({
                 </div>
                 <div className="flex min-w-0 flex-col gap-0.5">
                   {group.items.map((item) => {
-                    const active = !item.href.startsWith("/#") && pathname === item.href;
+                    const active = isNavHrefActive(pathname, item.href, hrefs);
                     return (
                       <Link
                         key={item.href}
                         role="menuitem"
                         href={item.href}
+                        aria-current={active ? "page" : undefined}
                         onClick={() => onOpenChange(false)}
                         className={cn(
                           "min-w-0 break-words rounded-lg px-2 py-1.5 text-[13px] leading-snug transition duration-150",
@@ -299,6 +312,7 @@ function MobileNavRow({
     <Link
       href={item.href}
       onClick={onNavigate}
+      aria-current={active ? "page" : undefined}
       className={cn(
         "group flex min-h-[44px] min-w-0 items-center justify-between gap-3 overflow-hidden rounded-xl border px-3.5 py-2.5 text-[14px] leading-snug transition duration-200 active:scale-[0.99]",
         active
@@ -348,6 +362,7 @@ export function Navigation() {
 
   const spotlight = isAuthenticated ? spotlightAuth : spotlightPublic;
   const exploreGroups = isAuthenticated ? exploreAuthGroups : explorePublicGroups;
+  const navHrefs = collectNavHrefs(spotlight, exploreGroups);
 
   React.useEffect(() => {
     setMobileMenuOpen(false);
@@ -523,13 +538,14 @@ export function Navigation() {
                     key={item.href}
                     item={item}
                     label={navItemLabel(item, t)}
-                    active={!item.href.startsWith("/#") && pathname === item.href}
+                    active={isNavHrefActive(pathname, item.href, navHrefs)}
                   />
                 ))}
               </nav>
               <div className="mx-0.5 h-5 w-px shrink-0 bg-white/10" aria-hidden />
               <ExploreMenu
                 groups={exploreGroups}
+                hrefs={navHrefs}
                 open={exploreOpen}
                 onOpenChange={setExploreOpen}
                 pathname={pathname ?? ""}
@@ -568,7 +584,7 @@ export function Navigation() {
                           key={item.href}
                           item={item}
                           label={navItemLabel(item, t)}
-                          active={!item.href.startsWith("/#") && pathname === item.href}
+                          active={isNavHrefActive(pathname, item.href, navHrefs)}
                           onNavigate={() => setMobileMenuOpen(false)}
                         />
                       ))}
@@ -592,7 +608,7 @@ export function Navigation() {
                             key={item.href}
                             item={item}
                             label={navItemLabel(item, t)}
-                            active={!item.href.startsWith("/#") && pathname === item.href}
+                            active={isNavHrefActive(pathname, item.href, navHrefs)}
                             onNavigate={() => setMobileMenuOpen(false)}
                           />
                         ))}
@@ -639,7 +655,7 @@ export function Navigation() {
                           key={item.href}
                           item={item}
                           label={navItemLabel(item, t)}
-                          active={!item.href.startsWith("/#") && pathname === item.href}
+                          active={isNavHrefActive(pathname, item.href, navHrefs)}
                           onNavigate={() => setMobileMenuOpen(false)}
                         />
                       ))}
@@ -663,7 +679,7 @@ export function Navigation() {
                             key={item.href}
                             item={item}
                             label={navItemLabel(item, t)}
-                            active={!item.href.startsWith("/#") && pathname === item.href}
+                            active={isNavHrefActive(pathname, item.href, navHrefs)}
                             onNavigate={() => setMobileMenuOpen(false)}
                           />
                         ))}

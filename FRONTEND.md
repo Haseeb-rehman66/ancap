@@ -206,6 +206,7 @@ frontend-app/
 - For unauthorized: Product, Vision, Login, Register
 - Language switch
 - Username display
+- The current section stays highlighted on nested routes. The longest matching link wins, so Dashboard stays off on Seller pages, and Discover more stays marked while the open page is inside that menu.
 
 ### NetworkBackground
 
