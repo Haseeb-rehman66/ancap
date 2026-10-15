@@ -40,14 +40,26 @@ function parseAcceptLanguage(value: string): Array<{ languageTag: string; qualit
   return value
     .split(",")
     .map((preference, order) => {
-      const [languageTag, ...parameters] = preference.trim().split(";");
-      const qualityParameter = parameters.find((parameter) => /^\s*q\s*=/i.test(parameter));
-      const qualityValue = qualityParameter?.split("=")[1]?.trim();
-      const quality = qualityValue === undefined ? 1 : Number(qualityValue);
+      const [rawLanguageTag, ...parameters] = preference.trim().split(";");
+      const languageTag = rawLanguageTag.trim();
+      let quality = 1;
+
+      if (parameters.length > 1) {
+        return { languageTag, quality: 0, order };
+      }
+
+      if (parameters.length === 1) {
+        const qualityParameter = parameters[0].trim().match(/^q\s*=\s*(.*?)$/i);
+        const qualityValue = qualityParameter?.[1].trim();
+        if (!qualityValue || !/^(?:0(?:\.\d{0,3})?|1(?:\.0{0,3})?)$/.test(qualityValue)) {
+          return { languageTag, quality: 0, order };
+        }
+        quality = Number(qualityValue);
+      }
 
       return { languageTag, quality, order };
     })
-    .filter(({ languageTag, quality }) => languageTag && Number.isFinite(quality) && quality > 0 && quality <= 1)
+    .filter(({ languageTag, quality }) => languageTag && languageTag !== "*" && quality > 0)
     .sort((a, b) => b.quality - a.quality || a.order - b.order);
 }
 
